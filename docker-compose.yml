@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  mysql-container:
+    image: mysql:latest
+    container_name: lamp-mysql-container
+    networks:
+      - lamp_network
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: your_database
+      MYSQL_USER: your_user
+      MYSQL_PASSWORD: your_password
+
+  php-apache-container:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: php-apache-image
+    container_name: php-apache-container
+    networks:
+      - lamp_network
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - "8080:80"
+
+networks:
+  lamp_network:
+    driver: bridge
+
