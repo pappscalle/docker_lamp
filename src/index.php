@@ -30,37 +30,37 @@
     <?php
     // Handle the form submission
     if (isset($_GET['title'])) {
-        $title = urlencode($_GET['title']);
-
+        $title = filter_input(INPUT_GET, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    
+        // Check if the title is empty after filtering
+        if (empty($title)) {
+            echo '<h2>Please enter a valid movie title</h2>';
+            exit; // Stop further execution if title is empty
+        }
+    
         // Construct the API URL
-        $apiUrl = "http://api.frenn.se/tmdb-search.php?query=$title";
-//echo $apiUrl;
-//echo "<br/>";
+        $apiUrl = "http://api.frenn.se/tmdb-search.php?query=" . urlencode($title);
+    
         // Make the API request
         $response = file_get_contents($apiUrl);
-
+    
         // Decode the JSON response
         $data = json_decode($response, true);
-//var_dump($data);
+    
         // Check if the request was successful
-
         if (empty($data['results'])) {
             echo '<h2>No films found</h2>';
         } else {
-
-
             foreach ($data['results'] as $movie) {
                 echo '<div class="movie">';
                 if (isset($movie['poster_path'])) {
                     echo '<img class="image" src="https://image.tmdb.org/t/p/original/' . $movie['poster_path'] . '" alt="Movie Poster">';
                 }                
-                echo '<h2>' . $movie['title'] .' ('. getYearFromDate($movie['release_date']) .')</h2>';
-                echo '<p><strong>Overview:</strong> ' . $movie['overview'] . '</p>';
-                echo '<p><strong>Release Date:</strong> ' . $movie['release_date'] . '</p>';
+                echo '<h2>' . htmlspecialchars($movie['title']) .' ('. getYearFromDate($movie['release_date']) .')</h2>';
+                echo '<p><strong>Overview:</strong> ' . htmlspecialchars($movie['overview']) . '</p>';
+                echo '<p><strong>Release Date:</strong> ' . htmlspecialchars($movie['release_date']) . '</p>';
                 // Add more details 
-        
- 
-        
+    
                 echo '</div>';
             }
         }
