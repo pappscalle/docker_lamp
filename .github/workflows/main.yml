@@ -19,9 +19,8 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        protocol: ftps
-        port: 22
+        protocol: ftp
+        port: 21
         local-dir: ./src/
         server-dir: /
         timeout: 60000
-        dry-run: true
