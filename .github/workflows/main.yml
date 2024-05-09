@@ -24,3 +24,4 @@ jobs:
         local-dir: ./src/
         server-dir: /
         timeout: 60000
+        dry-run: true
