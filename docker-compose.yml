@@ -11,6 +11,8 @@ services:
       MYSQL_DATABASE: your_database
       MYSQL_USER: your_user
       MYSQL_PASSWORD: your_password
+    volumes:
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
 
   php-apache-container:
     build:
